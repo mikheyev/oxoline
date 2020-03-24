@@ -1,0 +1,5 @@
+﻿Paper,double-blind,published,n control,n treatment,prop control,prop treatment,n affected control,n affected treatment
+Aksenov et al. (1970),yes,published,3016,4742,0.248,0.142,748,673
+Zlydnikov et al. (1970),no,published,34,31,0.882,0.484,30,15
+Bogdanova et al. (unpublished),no,unpublished,2000,2939,0.05,0.03,100,88
+Shablovskaya et al. (1972),yes,published,119,366,0.214,0.16895082,25.47,61.8
