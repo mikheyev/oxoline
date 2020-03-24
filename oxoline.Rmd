@@ -1,7 +1,6 @@
 ---
 title: "Oxoline meta-analysis"
 author: "Sasha Mikheyev"
-date: "3/12/2020"
 output: html_document
 editor_options: 
   chunk_output_type: console
@@ -13,20 +12,17 @@ suppressMessages(library(tidyverse))
 library(meta)
 library(gridExtra)
 library(pwr) 
-# needed for RStudio server:
-# sheets_auth(use_oob = T)
 ```
 
-
-#https://bookdown.org/MathiasHarrer/Doing_Meta_Analysis_in_R
+## Meta analysis
 
 ```{r readData}
-oxoline <- read_csv("oxoline.csv") %>% filter(!is.na(`prop control`)) %>% transmute(`n control` = round(`n control`), `n treatment` = round(`n treatment`), `n affected treatment` =  round(`n affected treatment`), `n affected control` = round(`n affected control`), Paper = Paper, `double-blind` = `double-blind`)
+oxoline <- read_csv("oxoline.csv") %>% filter(!is.na(`prop control`)) %>% transmute(`n control` = round(`n control`), `n treatment` = round(`n treatment`), `n affected treatment` =  round(`n affected treatment`), `n affected control` = round(`n affected control`), Paper = Paper, `double-blind` = `double-blind`, published = published)
 ```
 
 ```{r}
 oxoline.bin <- metabin(`n affected treatment`, `n treatment`, `n affected control`, `n control`, data = oxoline, 
-                       studlab = paste(paper), comb.fixed = FALSE, comb.random = TRUE, method.tau = "SJ", hakn = TRUE,  
+                       studlab = paste(Paper), comb.fixed = FALSE, comb.random = TRUE, method.tau = "SJ", hakn = TRUE,  
                        prediction = TRUE, incr = 0.1, measure ="RR")
 summary(oxoline.bin)
 
@@ -34,7 +30,7 @@ summary(oxoline.bin)
 # no Bogdanova
 oxoline.bin.noBogdanova <- metabin(`n affected treatment`, `n treatment`, `n affected control`, `n control`, 
                 data = oxoline %>% filter(published == "published"), 
-                studlab = paste(paper), comb.fixed = FALSE, 
+                studlab = paste(Paper), comb.fixed = FALSE, 
                 comb.random = TRUE, method.tau = "SJ", hakn = TRUE,  
                        prediction = TRUE, incr = 0.1, measure ="RR")
 
