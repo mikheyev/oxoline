@@ -8,18 +8,12 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 suppressMessages(library(tidyverse))
-library(googlesheets4)
 library(meta)
 ```
 
-Reading Oxoline data from Google Sheets
 
-#https://bookdown.org/MathiasHarrer/Doing_Meta_Analysis_in_R
-
-#add: timeframe
-
-```{r cars}
-oxoline <- read_sheet("https://docs.google.com/spreadsheets/d/1BwobMKFcXofwaPSTj-JmEY-cGfh61SGZfJfjs4EnnG0") %>% filter(!is.na(`prop control`)) %>% transmute(`n control` = round(`n control`), `n treatment` = round(`n treatment`), `n affected treatment` =  round(`n affected treatment`), `n affected control` = round(`n affected control`), Paper = Paper, `double-blind` = `double-blind`)
+```{r readData}
+oxoline <- read_csv("oxoline.csv") %>% filter(!is.na(`prop control`)) %>% transmute(`n control` = round(`n control`), `n treatment` = round(`n treatment`), `n affected treatment` =  round(`n affected treatment`), `n affected control` = round(`n affected control`), Paper = Paper, `double-blind` = `double-blind`)
 
 oxoline.bin <- metabin(`n affected treatment`, `n treatment`, `n affected control`, `n control`, data = oxoline, 
                        studlab = paste(Paper), comb.fixed = FALSE, comb.random = TRUE, method.tau = "SJ", hakn = TRUE,  
