@@ -10,7 +10,6 @@ editor_options:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 suppressMessages(library(tidyverse))
-library(googlesheets4)
 library(meta)
 library(gridExtra)
 library(pwr) 
@@ -18,14 +17,13 @@ library(pwr)
 # sheets_auth(use_oob = T)
 ```
 
-Reading Oxoline data from Google Sheets
 
 #https://bookdown.org/MathiasHarrer/Doing_Meta_Analysis_in_R
 
-
-```{r readSheet}
-oxoline <- read_sheet("https://docs.google.com/spreadsheets/d/1BwobMKFcXofwaPSTj-JmEY-cGfh61SGZfJfjs4EnnG0") %>% filter(!is.na(`prop control`)) %>% transmute(`n control` = round(`n control`), `n treatment` = round(`n treatment`), `n affected treatment` =  round(`n affected treatment`), `n affected control` = round(`n affected control`), paper = Paper, `double-blind` = `double-blind`, published = published )
+```{r readData}
+oxoline <- read_csv("oxoline.csv") %>% filter(!is.na(`prop control`)) %>% transmute(`n control` = round(`n control`), `n treatment` = round(`n treatment`), `n affected treatment` =  round(`n affected treatment`), `n affected control` = round(`n affected control`), Paper = Paper, `double-blind` = `double-blind`)
 ```
+
 ```{r}
 oxoline.bin <- metabin(`n affected treatment`, `n treatment`, `n affected control`, `n control`, data = oxoline, 
                        studlab = paste(paper), comb.fixed = FALSE, comb.random = TRUE, method.tau = "SJ", hakn = TRUE,  
